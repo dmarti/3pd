@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+import json
+import sys
+
+data = json.loads(sys.stdin.read())
+
+for cat in data['categories']:
+        print(cat)
+        for vendor in data['categories'][cat]:
+            name = list(vendor.keys())[0]
+            value = vendor[name]
+            url = list(value.keys())[0]
+            domains = value[url]
+            print("%s # %s" % (name, ', '.join(domains)))
+
