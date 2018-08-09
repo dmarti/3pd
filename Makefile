@@ -1,19 +1,23 @@
 all : li-ers.txt
 
-consensu/vendorlist.json :
+data/consensu/vendorlist.json :
+	mkdir -p `dirname $@`
 	wget -O $@ https://vendorlist.consensu.org/vendorlist.json
 
-disconnect/services.json :
+data/disconnect/services.json :
+	mkdir -p `dirname $@`
 	wget -O $@ https://raw.githubusercontent.com/disconnectme/disconnect-tracking-protection/master/services.json
 
-li-ers.txt : vendorlist.json li-ers
-	./li-ers < $< > $@
+data : data/consensu/vendorlist.json data/disconnect/services.json
+
+li-ers.txt : data/consensu/vendorlist.json scripts/li-ers
+	scripts/li-ers < $< > $@
 
 clean : 
 	rm -f li-ers.txt
 
 pristine : clean
-	rm -f vendorlist.json
+	rm -rf data
 
-.PHONY : all clean pristine
+.PHONY : all clean data pristine
 
